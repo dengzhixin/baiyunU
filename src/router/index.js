@@ -10,6 +10,7 @@ import Manage from '../components/admin/manage'
 import Draf from '../components/admin/draf'
 import Edit from '../components/admin/edit'
 import admin_welcome from '../components/admin/admin_welcome'
+import store from '../store/index'
 
 const router = new Router({
     mode: 'hash',
@@ -52,7 +53,15 @@ const router = new Router({
                     component: Edit,
                 }
 
-            ]
+            ],
+            beforeEnter:(to,from,next)=>{
+                if(store.state.username==null){
+                    router.push("/")
+                    next(false)
+                }else{
+                    next()
+                }
+            }
         }
 
 

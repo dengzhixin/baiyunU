@@ -11,7 +11,6 @@
         icon="el-icon-check"
         @click="updateNew"
       >立即更新</el-button>
-      <el-button size="mini" type="warning" class="right" icon="el-icon-star-off">保存为草稿</el-button>
     </el-breadcrumb>
     <div style="margin:10px"></div>
     <el-row>
@@ -55,24 +54,31 @@ export default {
   },
   watch: {},
   methods: {
-    selectorChange(newtype){
-      this.news.type=newtype
+    selectorChange(newtype) {
+      this.news.type = newtype;
     },
     updateNew() {
-       window.console.log(this.news)
+      window.console.log(this.news);
       this.axios
         .post("/updateNewsById", {
-          _id:this.news._id,
-          iconUrl:"",
+          _id: this.news._id,
+          iconUrl: "",
           title: this.news.title,
           content: this.news.content,
-          type: this.news.type,
+          type: this.news.type
         })
         .then(res => {
+          window.console.log(res);
           if (res.data == true) {
-            this.this.$message({
+            this.$message({
               type: "success",
               message: "更新成功"
+            });
+            this.$router.push({
+              path: "/readNews",
+              query: {
+                id: this.news._id
+              }
             });
           }
         })

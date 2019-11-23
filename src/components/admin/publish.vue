@@ -105,11 +105,12 @@ export default {
         })
         .then(res => {
           window.console.log(res);
-          if (res.data == true) {
-            this.this.$message({
+          if (res.data) {
+            this.$message({
               type: "success",
               message: "保存到草稿箱"
             });
+            this.$router.push('/admin/draf')
           }
         })
         .catch(err => {
@@ -121,14 +122,7 @@ export default {
   created() {},
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.axios
-      .post("/getNewsById?id=" + "5dd3e02513caa943efa0ffaa")
-      .then(res => {
-        window.console.log(res);
-      })
-      .catch(err => {
-        window.console.log(err);
-      });
+    
   },
   // 生命周期 - 创建之前
   beforeCreate() {},

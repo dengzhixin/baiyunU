@@ -52,6 +52,34 @@
           </el-tab-pane>
         </el-tabs>
       </div>
+      <div class="login">
+        <div v-if="$store.state.username==null">
+          <h2>BaiYunU</h2>
+          <el-input placeholder="请输入内容" class="marginTop10" v-model="username">
+            <template slot="prepend">账号：</template>
+          </el-input>
+          <el-input placeholder="请输入内容" class="marginTop10" v-model="password">
+            <template slot="prepend">密码：</template>
+          </el-input>
+          <center>
+          <el-button class="marginTop10" type="primary" @click="login">登录</el-button>
+        </center>
+        </div>
+        
+        <ul class="tags">
+          <li>校园门户</li>
+          <li>青果教务</li>
+          <li>图书馆</li>
+          <li>信息公开</li>
+          <li>采购招标</li>
+          <li>人才招聘</li>
+          <li>后勤服务</li>
+          <li>来校路线</li>
+          <li>学校视频</li>
+          <li>党建视频</li>
+          <li>技师学院</li>
+        </ul>
+      </div>
     </div>
     <bottom />
   </div>
@@ -69,24 +97,42 @@ export default {
   },
   data() {
     return {
-      activeName: "hot"
+      activeName: "hot",
+      username: "",
+      password: ""
     };
   },
 
   computed: {},
   watch: {},
   methods: {
+    login() {
+      this.axios
+        .post("/user/login?id=" + this.username + "&password=" + this.password)
+        .then(res => {
+          window.console.log(res);
+          if (
+            res.data.msg == this.username + "登录成功" ||
+            res.data.msg == "已登录"
+          ) {
+            this.$store.commit("login", this.username);
+            this.$router.push("/admin");
+          } else {
+            alert(res.data.msg);
+          }
+        });
+    },
     tabChange(tab) {
       let newsType = tab.name;
       if (this.$store.state.news[newsType].list.length < 1) {
         this.$store.dispatch("requestNews", {
           pageSize: 10,
-        page: 1,
-        type: newsType
+          page: 1,
+          type: newsType
         });
         // this.requestNews(10, 1, newsType, () => {
         // });
-      } 
+      }
     },
     readNews(index, news) {
       this.$router.push({
@@ -132,10 +178,12 @@ export default {
   width: 80vw;
   max-width: 1080px;
   margin: 0 auto;
+  display: flex;
+  padding: 40px 0px;
+  justify-content: space-between;
 }
 .news {
-  padding: 40px 0px;
-  width: 60%;
+  width: 50%;
   box-sizing: border-box;
 }
 .news li {
@@ -143,7 +191,25 @@ export default {
   cursor: pointer;
   transition: 0.3s;
 }
-.news li:hover {
-  /* background-color: rgba(0, 0, 0, 0.1); */
+.login {
+  width: 30%;
+  max-width: 350px;
+  border-radius: 20px;
+  /* border: 2px solid #034567; */
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.1);
+}
+.tags {
+  list-style: none;
+  margin: 20px;
+}
+.tags li {
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+.marginTop10 {
+  margin-top: 10px;
 }
 </style>

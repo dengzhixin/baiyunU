@@ -1,4 +1,5 @@
 module.exports = {
+  
     /** 区分打包环境与开发环境
      * process.env.NODE_ENV==='production'  (打包环境)
      * process.env.NODE_ENV==='development' (开发环境)
@@ -68,13 +69,9 @@ module.exports = {
       hotOnly: false, // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
   
       // proxy: null // string | Object
-      proxy:{
-        "/*": {
-          "target": "http://112.124.6.208:8080",
-          "changeOrigin":true
-        }
+      proxy:"http://112.124.6.208:8080"
+      
     
-      }
       // before: app => {}
     }, // 第三方插件配置
   

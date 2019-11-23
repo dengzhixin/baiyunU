@@ -101,10 +101,22 @@ export default {
       })
         .then(() => {
           this.axios.post("/deleteNewsById?id=" + row._id).then(() => {
+            // window.console.log(row)
+            // window.console.log(this.$store.state.news[row.type])
+            // window.console.log(this.$store.state.news)
+            // window.console.log( this.$store.state.news[row.type].list[][index])
+            
+            this.$store.commit("deleteItem",{
+              type:row.type,
+              index:index,
+              currentPage:this.tableData.currentPage
+            })
+            this.tableData.list.splice(index,1)
             this.$message({
               type: "success",
               message: "删除成功"
             });
+
           });
         })
         .catch(() => {

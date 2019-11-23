@@ -3,11 +3,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    adminEdit:{
-      type:'',
-      page:0,
-      index:0
-    },
+    username: null,
     news: {
       draf: {
         currentPage: 1,
@@ -64,9 +60,21 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
+    login(state,username){
+      state.username=username
+    },
     setNews(state, obj) {
       state.news[obj.type].page = obj.res.page;
       state.news[obj.type].list[obj.page] = obj.res.list;
+      state.news = JSON.parse(JSON.stringify(state.news))
+    },
+    addItem() {
+
+    },
+    deleteItem(state, obj) {
+      state.news[obj.type].list[obj.currentPage].splice(obj.index, 1)
+    },
+    update(state) {
       state.news = JSON.parse(JSON.stringify(state.news))
     }
   },
@@ -75,26 +83,7 @@ const store = new Vuex.Store({
 
 
   getters: {
-    checkPermision(state) {
-      return (permision) => {
-        if (!state.userinfo) {
-          return false
-        }
-        try {
-          state.userinfo.permisions.forEach((p) => {
-            if (p == permision) {
-              throw true
-            }
-          })
-        } catch (e) {
-          return e
-        }
-
-
-      }
-
-
-    }
+    
   }
 })
 export default store;

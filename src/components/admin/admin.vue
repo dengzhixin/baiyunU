@@ -4,7 +4,7 @@
       <el-header height="40px" class="header">
         <div class="content">
           <img src="/image/" alt="">
-          <marquee behavior="scroll" direction="left" scrollamount="4">欢迎你使用广东白云学院新闻发布管理系统</marquee>
+          <marquee behavior="scroll" direction="left" scrollamount="4">{{$store.state.username}}欢迎你使用广东白云学院新闻发布管理系统</marquee>
         </div>
       </el-header>
       <el-container>
