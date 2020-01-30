@@ -1,4 +1,4 @@
-# vue-web-mongodb-project
+# 基于VUE的广东白云学院新闻网
 
 ## Project setup
 ```
