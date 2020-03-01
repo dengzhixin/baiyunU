@@ -2,7 +2,7 @@
   <div class="bottom">
     <div class="content">
       <el-row>
-        <el-col class="department" :span="20">
+        <el-col class="department" :xs="24" :sm="24" :md="20" :lg="20" :xl="20">
           <h2>职能部门</h2>
           <ul>
             <li>教务处</li>
@@ -31,7 +31,7 @@
           </ul>
                                 
         </el-col>
-        <el-col class="department" :span="4">
+        <el-col class="department" :xs="24" :sm="24" :md="4" :lg="4" :xl="4">
           <h2>党群部门</h2>
                
           <ul>
@@ -48,7 +48,7 @@
       </el-row>
       <div class="dashBorder"></div>
       <el-row class="info">
-        <el-col :span="20">
+        <el-col  :xs="24" :sm="24" :md="20" :lg="20" :xl="20">
           <img class="logo" src="/image/logo.png" alt="">
           <p>招生咨询：020-36093333 传真：020-36095259 邮政编码：510450</p>
           <p>西校区地址：广东省广州市白云区江高镇学苑路1号</p>
@@ -56,7 +56,7 @@
           <p>粤公网安备 44011102000160号</p>
           <p>ICP备案号：粤ICP备15092391号-2</p>
         </el-col>
-        <el-col :span="4">
+        <el-col :xs="24" :sm="24" :md="4" :lg="4" :xl="4">
           <h2>官方公众号</h2>
           <img class="wechat" src="http://www.baiyunu.edu.cn/templates/net/images/gzh.jpg" alt="">
         </el-col>
@@ -98,12 +98,14 @@ export default {
 <style scoped>
 .bottom {
   width: 100%;
-  height: 560px;
+  /* height: 560px; */
   background-color: #034567;
   color: white;
+  padding-bottom: 20px;
 }
 .content {
-  width: 1080px;
+  width: 80vw;
+  max-width: 1080px;
 }
 .content p {
   text-align: left;

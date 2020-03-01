@@ -5,7 +5,7 @@
     <div class="content">
       <center>
         <h2 v-text="news.title"></h2>
-        <p v-text="'发布时间：'+news.date"></p>
+        <p v-text="status+'发布时间：'+news.date"></p>
       </center>
 
       <p v-html="news.content"></p>
@@ -31,7 +31,15 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+    status:function(){
+      if(this.news && this.news.statu==0){
+        return '草稿'
+      }else{
+        return ''
+      }
+    }
+  },
   watch: {},
   methods: {},
   // 生命周期 - 创建完成（可以访问当前this实例）

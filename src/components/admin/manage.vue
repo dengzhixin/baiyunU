@@ -1,7 +1,7 @@
 <template>
   <div class>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '#' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/admin/manage' }">新闻管理</el-breadcrumb-item>
       <el-select v-model="type" @change="changeNewType" class="typeSelecter">
         <el-option value="热点新闻">热点新闻</el-option>
@@ -25,7 +25,13 @@
       </el-table-column>
     </el-table>
     <div class="pagination">
-      <el-pagination layout="prev, pager, next" :total="tableData.page"></el-pagination>
+      <el-pagination
+        layout="prev, pager, next"
+        :page-size="1"
+        :current-page="tableData.currentPage"
+        :total="tableData.page"
+        @current-change="changePage"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -37,13 +43,29 @@ export default {
   data() {
     return {
       type: "热点新闻",
-      tableData: null
+      tableData: {
+        currentPage:1,
+        list:[],
+        page:1
+      },
     };
   },
 
   computed: {},
   watch: {},
   methods: {
+    changePage(page) {
+      let newsType = newsTypeAdapter(this.type);
+      let that =this
+      if (!this.$store.state.news[newsType].list[page]) {
+        this.requestNews(10, page, newsType, () => {
+          this.$store.state.news[newsType].currentPage=page
+          that.tableData=this.$store.state.news[newsType] 
+        });
+      } else {
+          that.tableData.currentPage=page
+      }
+    },
     changeNewType() {
       let newsType = newsTypeAdapter(this.type);
       if (this.$store.state.news[newsType].list.length < 1) {
@@ -71,7 +93,6 @@ export default {
       }
     },
     handleView(index, row) {
-      window.console.log(index, row);
       this.$router.push({
         path: "/readNews",
         query: {
@@ -101,22 +122,17 @@ export default {
       })
         .then(() => {
           this.axios.post("/deleteNewsById?id=" + row._id).then(() => {
-            // window.console.log(row)
-            // window.console.log(this.$store.state.news[row.type])
-            // window.console.log(this.$store.state.news)
-            // window.console.log( this.$store.state.news[row.type].list[][index])
-            
-            this.$store.commit("deleteItem",{
-              type:row.type,
-              index:index,
-              currentPage:this.tableData.currentPage
-            })
-            this.tableData.list.splice(index,1)
+
+            this.$store.commit("deleteItem", {
+              type: row.type,
+              index: index,
+              currentPage: this.tableData.currentPage
+            });
+            this.tableData.list.splice(index, 1);
             this.$message({
               type: "success",
               message: "删除成功"
             });
-
           });
         })
         .catch(() => {
@@ -145,6 +161,7 @@ export default {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
+    window.console.log(this.tableData)
     // this.tableData = this.news.hot;
   },
   // 生命周期 - 创建之前
@@ -164,6 +181,9 @@ export default {
 <style scoped>
 .pagination {
   float: right;
+}
+.el-select{
+  width: auto;
 }
 .typeSelecter {
   float: right;

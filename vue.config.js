@@ -57,19 +57,22 @@ module.exports = {
   
     devServer: {
       open: process.platform === "darwin",
-  
       disableHostCheck: false,
-  
       host: "0.0.0.0",
-  
       port: 8080,
-  
       https: false,
-  
       hotOnly: false, // See https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
-  
       // proxy: null // string | Object
-      proxy:"http://112.124.6.208:8080"
+      proxy: {
+        '/api': {
+            target: 'http://112.124.6.208:8080', //API服务器的地址
+            changeOrigin: true,
+            pathRewrite: {
+                '^/api': ''
+            }
+        }
+    },
+
       
     
       // before: app => {}

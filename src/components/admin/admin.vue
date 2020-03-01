@@ -1,14 +1,19 @@
 <template>
   <el-menu class>
     <el-container>
-      <el-header height="40px" class="header">
-        <div class="content">
-          <img src="/image/" alt="">
-          <marquee behavior="scroll" direction="left" scrollamount="4">{{$store.state.username}}欢迎你使用广东白云学院新闻发布管理系统</marquee>
-        </div>
+      <el-header height="45px" class="header">
+        <top />
+        <!-- <div class="content">
+          <img src="/image/" alt />
+          <marquee
+            behavior="scroll"
+            direction="left"
+            scrollamount="4"
+          >{{$store.state.username}}欢迎你使用广东白云学院新闻发布管理系统</marquee>
+        </div> -->
       </el-header>
       <el-container>
-        <el-aside width="200px">
+        <el-aside width="180px">
           <el-row class="left">
             <el-menu
               default-active="2"
@@ -19,16 +24,24 @@
               :router="true"
             >
               <el-menu-item index="/admin/manage">
-                <i class="el-icon-setting"></i>
+                <i class="el-icon-s-management"></i>
                 <span slot="title">新闻管理</span>
               </el-menu-item>
               <el-menu-item index="/admin/publish">
-                <i class="el-icon-setting"></i>
+                <i class="el-icon-s-finance"></i>
                 <span slot="title">发布新闻</span>
               </el-menu-item>
               <el-menu-item index="/admin/draf">
-                <i class="el-icon-star-off"></i>
+                <i class="el-icon-star-on"></i>
                 <span slot="title">草稿箱</span>
+              </el-menu-item>
+              <el-menu-item index="/admin/userMange">
+                <i class="el-icon-user-solid"></i>
+                <span slot="title">用户管理</span>
+              </el-menu-item>
+              <el-menu-item index="/admin/myself">
+                <i class="el-icon-user-solid"></i>
+                <span slot="title">用户中心</span>
               </el-menu-item>
             </el-menu>
           </el-row>
@@ -42,12 +55,13 @@
 </template>
 
 <script>
+import top from "../top";
 export default {
-  components: {},
+  components: {top},
   data() {
     return {
       msg: "Hello Vue",
-      true:true
+      true: true
     };
   },
 
@@ -74,21 +88,21 @@ export default {
 </script>
 
 <style>
-.header{
-  background-color: #B3C0D1;
-
+.header {
+  /* background-color: #b3c0d1; */
+  padding:0;
 }
-.content{
+.content {
   width: 1080px;
   line-height: 40px;
   margin: 0 auto;
 }
 .left {
-  height: calc(100vh - 40px);
+  height: calc(100vh - 45px);
   background-color: rgb(84, 92, 100);
 }
 .main {
-  height: calc(100vh - 40px);
+  height: calc(100vh - 45px);
   overflow-x: hidden;
   overflow-y: scroll;
 }

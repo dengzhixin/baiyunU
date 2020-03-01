@@ -3,13 +3,16 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 import Admin from '../components/admin/admin'
-import Index from '../components/index'
+import Index from '../components/index/index'
+import IndexIndex from '../components/index/indexIndex'
+import indexSearch from '../components/index/search'
 import ReadNews from '../components/readNew'
 import Publish from '../components/admin/publish'
 import Manage from '../components/admin/manage'
+import UserManage from '../components/admin/userManage'
+import Myself from '../components/admin/myself'
 import Draf from '../components/admin/draf'
 import Edit from '../components/admin/edit'
-import admin_welcome from '../components/admin/admin_welcome'
 import store from '../store/index'
 
 const router = new Router({
@@ -17,7 +20,16 @@ const router = new Router({
     routes: [{
             path: '/',
             name: 'Index',
-            component: Index
+            component: Index,
+            children: [{
+                    path: '',
+                    component: IndexIndex
+                },
+                {
+                    path: 'search',
+                    component: indexSearch
+                }
+            ]
         },
         {
             path: '/index',
@@ -32,12 +44,11 @@ const router = new Router({
             path: '/Admin',
             name: 'Admin',
             component: Admin,
-            children: [
-                {
+            children: [{
                     path: '',
-                    component: admin_welcome,
+                    component: Manage,
 
-                },{
+                }, {
                     path: 'publish',
                     component: Publish,
 
@@ -51,14 +62,22 @@ const router = new Router({
                 {
                     path: 'edit',
                     component: Edit,
+                },
+                {
+                    path: 'userMange',
+                    component: UserManage,
+                },
+                {
+                    path: 'myself',
+                    component: Myself,
                 }
 
             ],
-            beforeEnter:(to,from,next)=>{
-                if(store.state.username==null){
+            beforeEnter: (to, from, next) => {
+                if (store.state.userInfo == null) {
                     router.push("/")
                     next(false)
-                }else{
+                } else {
                     next()
                 }
             }
@@ -67,8 +86,8 @@ const router = new Router({
 
     ]
 })
-router.afterEach( () => {
-    window.scrollTo(0,0)
+router.afterEach(() => {
+    window.scrollTo(0, 0)
 })
 
 export default router

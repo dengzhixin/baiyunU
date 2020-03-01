@@ -1,17 +1,22 @@
 <template>
   <div class>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '#' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/admin/manage' }">新闻管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/admin/draf' }">草稿</el-breadcrumb-item>
     </el-breadcrumb>
     <div style="margin:10px"></div>
-    <el-table :data="$store.state.news.draf.list[$store.state.news.draf.currentPage]" border style="width: 100%">
+    <el-table
+      :data="$store.state.news.draf.list[$store.state.news.draf.currentPage]"
+      border
+      style="width: 100%"
+    >
       <el-table-column prop="date" label="日期" width="180"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="type" width="60" label="类型"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
+          <el-button size="mini" @click="handleView(scope.$index, scope.row)">预览</el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="success" @click="handleSend(scope.$index, scope.row)">发布</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -37,16 +42,83 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    handleEdit(index,row){
+    handleSend(index, row) {
+      this.axios
+        .post("/updateNewsById", {
+          _id: row._id,
+          statu: 1
+        })
+        .then(res => {
+          if (res.data == true) {
+            this.$message({
+              type: "success",
+              message: "发布成功"
+            });
+            this.$store.commit("deleteItem", {
+              type: "draf",
+              index: index,
+              currentPage: this.$store.state.news.draf.currentPage
+            });
+            this.$router.push({
+              path: "/readNews",
+              query: {
+                id: row._id
+              }
+            });
+          }
+        })
+        .catch(err => {
+          window.console.log(err);
+        });
+    },
+    handleDelete(index, row) {
+      this.$confirm("此操作将永久删除该新闻, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.axios.post("/deleteNewsById?id=" + row._id).then(() => {
+
+            this.$store.commit("deleteItem", {
+              type: "draf",
+              index: index,
+              currentPage: this.$store.state.news.draf.currentPage
+            });
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    handleView(index, row) {
       this.$router.push({
-        path:'/admin/edit',
-        query:{
-          type:'draf',
-          page:this.$store.state.news.draf.currentPage,
-          index:index,
+        path: "/readNews",
+        query: {
+          type: "draf",
+          index: index,
+          page: this.$store.state.news.draf.currentPage,
           id: row._id
         }
-      })
+      });
+    },
+    handleEdit(index, row) {
+      this.$router.push({
+        path: "/admin/edit",
+        query: {
+          type: "draf",
+          page: this.$store.state.news.draf.currentPage,
+          index: index,
+          id: row._id
+        }
+      });
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

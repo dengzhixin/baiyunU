@@ -1,7 +1,7 @@
 <template>
   <div class>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '#' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/admin/manage' }">新闻管理</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/admin/publish' }">编辑</el-breadcrumb-item>
       <el-button
@@ -58,7 +58,6 @@ export default {
       this.news.type = newtype;
     },
     updateNew() {
-      window.console.log(this.news);
       this.axios
         .post("/updateNewsById", {
           _id: this.news._id,

@@ -52,9 +52,16 @@ export default {
   color: #2c3e50;
 }
 .content {
-  width: 1080px;
+  width: 80vw;
+  max-width: 1080px;
   margin: 0 auto;
 }
-
+.layout-row{
+  display: flex;
+}
+.layout-col{
+  display: flex;
+  flex-direction: column;
+}
 
 </style>

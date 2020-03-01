@@ -1,8 +1,7 @@
 <template>
   <div class>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '#' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/admin/manage' }">新闻管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/admin/publish' }">发布</el-breadcrumb-item>
       <el-button size="mini" type="success" class="right" icon="el-icon-check" @click="publish">立即发布</el-button>
       <el-button
@@ -83,9 +82,6 @@ export default {
               .catch(() => {
                 this.$router.push({
                   path:'/admin/manage',
-                  query:{
-                    id:res.data
-                  }
                 })
               });
           }

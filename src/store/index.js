@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    username: null,
+    userInfo: null,
     news: {
       draf: {
         currentPage: 1,
@@ -30,7 +30,13 @@ const store = new Vuex.Store({
         page: 0,
         list: []
       }
+    },
+    users:{
+      currentPage:0,
+      sumPage:0,
+      list:[]
     }
+
   },
   actions: {
     async requestNews(ctx, obj) {
@@ -57,17 +63,45 @@ const store = new Vuex.Store({
         .catch(err => {
           window.console.log(err);
         });
-    }
+    },
+    async requesUsers(ctx,page){
+      Vue.axios("/admin/getAlladmin?pageSize=10&page="+page).then((res)=>{
+        res = res.data;
+        ctx.commit("setUsers", {
+          page: page,
+          res: res
+        })
+      }).catch(err => {
+        window.console.log(err);
+      });
+    },
+    
   },
   mutations: {
-    login(state,username){
-      state.username=username
+    login(state,userInfo){
+      window.console.log(userInfo)
+      state.userInfo=userInfo
     },
     setNews(state, obj) {
-      state.news[obj.type].page = obj.res.page;
-      state.news[obj.type].list[obj.page] = obj.res.list;
-      state.news = JSON.parse(JSON.stringify(state.news))
+      state.news[obj.type].page = obj.res.sumpage;
+      Vue.set(state.news[obj.type].list,obj.page,obj.res.list)
     },
+    setUsers(state, obj){
+      window.console.log("---")
+      window.console.log(obj)
+
+      state.users.list[obj.page]=obj.res
+      state.users.currentPage=obj.page
+      state.users.sumPage=obj.res.page
+    },
+    addUser(state, obj){
+      state.users.list[state.users.currentPage].list.push(obj)
+
+    },
+    setUsersPage(state, page){
+      state.users.currentPage=page
+    },
+
     addItem() {
 
     },
